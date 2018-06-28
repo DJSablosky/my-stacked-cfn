@@ -1,0 +1,33 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  VPCStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/cf-templates-djs-us-east-1/Onica_VPC.yaml
+      Parameters:
+        EnvironmentName:  DJS-Onica-Approach-1
+      TimeoutInMinutes: '60'
+  AutoscalingStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/cf-templates-djs-us-east-1/Onica_Autoscaling_Website.yaml
+      Parameters:
+        VpcId:
+          Fn::GetAtt:
+          - VPCStack
+          - Outputs.VPC 
+        Subnets:
+          Fn::GetAtt:
+          - VPCStack
+          - Outputs.PublicSubnets
+      TimeoutInMinutes: '60'
+Outputs:
+  StackRef:
+    Value:
+      Ref: AutoscalingStack
+  OutputFromNestedStack:
+    Value:
+      Fn::GetAtt:
+      - AutoscalingStack
+      - Outputs.URL
