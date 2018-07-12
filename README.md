@@ -1,4 +1,4 @@
-# Daniel Sablosky's nested AWS CloudFormation templates
+# Nested AWS CloudFormation templates
 
 This repository contains three AWS CloudFormation templates.
 
